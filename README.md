@@ -1,1 +1,1 @@
-# weather-app
+Weather application made with React Native.
