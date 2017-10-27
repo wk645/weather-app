@@ -42,6 +42,16 @@ export default class App extends React.Component {
     });
   }
 
+  getForecast = (lat, long) => {
+    fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&APPID=${API_KEY}`)
+    .then(res => res.json())
+    .then(json => { console.log(json) })
+    // {
+      // this.setState({ 
+      // })
+    }
+  }
+
 
   render() {
 
@@ -49,8 +59,8 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} />
-        {isLoaded ? <Weather weatherName={name} temp={Math.floor(temperature - 230.15)} city={city} /> : <View style={styles.loading}>
+        <StatusBar barStyle='dark-content' />
+        {isLoaded ? <Weather weatherName={name} temp={Math.floor(temperature - 231.15)} city={city} /> : <View style={styles.loading}>
           <Text style={styles.loadingText}>Fetching Weather Data</Text>
           {error ? <Text style={styles.errorText}>{error}</Text> : null }
           </View>}

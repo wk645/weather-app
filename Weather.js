@@ -116,15 +116,13 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 		color: 'white',
 		marginBottom: 10,
-		fontWeight: '300',
-		// alignItems: 'center'
+		fontWeight: '300'
 	},
 	subtitle: {
 		fontSize: 24,
 		backgroundColor: 'transparent',
 		color: 'white',
-		marginBottom: 24,
-		// alignItems: 'center'
+		marginBottom: 24
 	}
 })
 
