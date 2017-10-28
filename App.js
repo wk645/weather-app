@@ -9,16 +9,21 @@ export default class App extends React.Component {
   state = {
     isLoaded: false,
     error: null,
-    temperature: null,
+    homeTemperature: null,
     name: null,
     city: null,
-    country: null
+    country: null,
+
+    dayTwoTemperature: null,
+    dayTwoName: null,
+    dayTwoDate: null
   };
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.getWeather(position.coords.latitude, position.coords.longitude)
+        this.getWeather(position.coords.latitude, position.coords.longitude),
+        this.getForecast(position.coords.latitude, position.coords.longitude)
       },
       error => {
         this.setState({
@@ -33,34 +38,36 @@ export default class App extends React.Component {
     .then(res => res.json())
     .then(json => {
       this.setState({
-        temperature: json.main.temp,
+        homeTemperature: json.main.temp,
         name: json.weather[0].main,
         city: json.name,
         country: json.sys.country,
         isLoaded: true
-      }) 
+      })
     });
   }
 
   getForecast = (lat, long) => {
-    fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&APPID=${API_KEY}`)
+    fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&APPID=${API_KEY}`)
     .then(res => res.json())
-    .then(json => { console.log(json) })
-    // {
-      // this.setState({ 
-      // })
-    }
+    .then(json => {
+      this.setState({
+        dayTwoTemperature: json.list[0].main.temp,
+        dayTwoName: json.list[0].weather[0].main
+      })
+    })
   }
-
 
   render() {
 
-    const { isLoaded, error, temperature, name, city } = this.state;
+    const { isLoaded, error, homeTemperature, name, city, dayTwoTemperature, dayTwoName } = this.state;
+
+    console.log("in App", dayTwoName)
 
     return (
       <View style={styles.container}>
         <StatusBar barStyle='dark-content' />
-        {isLoaded ? <Weather weatherName={name} temp={Math.floor(temperature - 231.15)} city={city} /> : <View style={styles.loading}>
+        {isLoaded ? <Weather weatherName={name} temp={Math.floor(homeTemperature - 231.15)} city={city} dayTwoTemperature={dayTwoTemperature} dayTwoName={dayTwoName} /> : <View style={styles.loading} >
           <Text style={styles.loadingText}>Fetching Weather Data</Text>
           {error ? <Text style={styles.errorText}>{error}</Text> : null }
           </View>}

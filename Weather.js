@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
+import Forecast from './Forecast';
 
 const weatherCases = {
 	Rain: {
@@ -55,7 +56,7 @@ const weatherCases = {
 	}
 }
 
-function Weather({ temp, weatherName, city}) {
+function Weather({ temp, weatherName, city, dayTwoTemperature, dayTwoName }) {
 
 	return (
 	<LinearGradient colors={weatherCases[weatherName].colors} style={styles.container}>
@@ -69,6 +70,10 @@ function Weather({ temp, weatherName, city}) {
 		<View style={styles.lower}>
 			<Text style={styles.title}>{weatherCases[weatherName].title}</Text>
 			<Text style={styles.subtitle}>{weatherCases[weatherName].subtitle}</Text>
+		</View>
+
+		<View>
+			<Forecast dayTwoTemperature={Math.floor(dayTwoTemperature - 231.15)} dayTwoName={dayTwoName}/>
 		</View>
 
 	</LinearGradient>
