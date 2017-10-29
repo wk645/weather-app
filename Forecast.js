@@ -59,11 +59,10 @@ let weatherCases = {
 }
 
 	console.log("in forecast", weatherCases[dayTwoName].icon)
-	// <Ionicons color="white" size={50} name={weatherCases[dayTwoName].icon} />
-
 
 	return (
 		<View style={styles.lower}>
+			<Text style={styles.future}>Future Forecast</Text>
 			<Ionicons color="white" size={50} name={weatherCases[dayTwoName].icon} />
 			<Text style={styles.temp}>
 				{dayTwoTemperature}°F
@@ -86,5 +85,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		backgroundColor: 'transparent'
+	},
+	future: {
+		backgroundColor: 'transparent',
+		color: 'white'
 	}
 })

@@ -53,7 +53,8 @@ export default class App extends React.Component {
     .then(json => {
       this.setState({
         dayTwoTemperature: json.list[0].main.temp,
-        dayTwoName: json.list[0].weather[0].main
+        dayTwoName: json.list[0].weather[0].main,
+        dayTwoDate: json.list[0].dt_txt
       })
     })
   }
@@ -61,8 +62,6 @@ export default class App extends React.Component {
   render() {
 
     const { isLoaded, error, homeTemperature, name, city, dayTwoTemperature, dayTwoName } = this.state;
-
-    console.log("in App", dayTwoName)
 
     return (
       <View style={styles.container}>
