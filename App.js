@@ -13,16 +13,13 @@ export default class App extends React.Component {
     name: null,
     city: null,
     country: null,
-
-    dayTwoTemperature: null,
-    dayTwoName: null,
-    dayTwoDate: null
+    hourlyForecast: []
   };
 
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
-        this.getWeather(position.coords.latitude, position.coords.longitude),
+        this.getWeather(position.coords.latitude, position.coords.longitude)
         this.getForecast(position.coords.latitude, position.coords.longitude)
       },
       error => {
@@ -37,6 +34,7 @@ export default class App extends React.Component {
     fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&APPID=${API_KEY}`)
     .then(res => res.json())
     .then(json => {
+      // console.log("data", json)
       this.setState({
         homeTemperature: json.main.temp,
         name: json.weather[0].main,
@@ -51,29 +49,36 @@ export default class App extends React.Component {
     fetch(`http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&APPID=${API_KEY}`)
     .then(res => res.json())
     .then(json => {
+      // console.log("hourly data", json)
       this.setState({
-        dayTwoTemperature: json.list[0].main.temp,
-        dayTwoName: json.list[0].weather[0].main,
-        dayTwoDate: json.list[0].dt_txt
+        hourlyForecast: json.list.map(data => ({
+          temp: data.main.temp,
+          date: data.dt_txt,
+          name: data.weather[0].main
+        }))
       })
     })
   }
 
   render() {
 
-    const { isLoaded, error, homeTemperature, name, city, dayTwoTemperature, dayTwoName } = this.state;
+    // const { isLoaded, error, homeTemperature, name, city, hourlyForecast } = this.state;
+
+    // console.log("app state", this.state.hourlyForecast)
 
     return (
       <View style={styles.container}>
         <StatusBar barStyle='dark-content' />
-        {isLoaded ? <Weather weatherName={name} temp={Math.floor(homeTemperature - 231.15)} city={city} dayTwoTemperature={dayTwoTemperature} dayTwoName={dayTwoName} /> : <View style={styles.loading} >
+        {this.state.isLoaded ? <Weather weatherName={this.state.name} temp={Math.floor((9/5) * (this.state.homeTemperature - 273) + 32)} city={this.state.city} hourlyForecast={this.state.hourlyForecast} /> : <View style={styles.loading} >
           <Text style={styles.loadingText}>Fetching Weather Data</Text>
-          {error ? <Text style={styles.errorText}>{error}</Text> : null }
+          {this.state.error ? <Text style={styles.errorText}>{this.state.error}</Text> : null }
           </View>}
       </View>
     );
   }
 }
+
+// kelvin to f° = 9/5 (K - 273) + 32
 
 const styles = StyleSheet.create({
   container: {

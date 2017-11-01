@@ -1,64 +1,60 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { LinearGradient } from 'expo';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
-import Forecast from './Forecast';
+// import Hourlys from './Hourlys';
 
 const weatherCases = {
 	Rain: {
 		colors: ['#00C6FB', '#005BEA', 'black'],
 		title: 'Rainy',
-		subtitle: 'More information?',
 		icon: 'ios-rainy'
 	},
 	Clear: {
 		colors: ['#FEF253', '#FF7300'],
 		title: 'Sunny',
-		subtitle: 'More information?',
 		icon: 'ios-sunny'
 	},
 	Thunderstorm : {
 		colors: ['#00ECBC', '#007ADF'],
 		title: 'Thunderstorming',
-		subtitle: 'More information?',
 		icon: 'ios-thunderstorm'
 	},
 	Clouds: {
 		colors: ['#D7D2CC', '#304352'],
 		title: 'Cloudy',
-		subtitle: 'More information?',
 		icon: 'ios-cloudy',
 	},
 	Snow: {
 		colors: ['#7DE2FC', '#B9B6E5'],
 		title: 'Snowy',
-		subtitle: 'More information?',
 		icon: 'ios-snow'
 	},
 	Drizzle: {
 		colors: ['#89F7FE', '#66A6FF'],
 		title: 'Drizzling',
-		subtitle: 'More information?',
 		icon: 'ios-rainy-outline'
 	},
 	Mist: {
 		colors: ['#89F7FE', '#66A6FF', 'navy'],
 		title: 'Misting',
-		subtitle: 'More information?',
 		icon: 'md-rainy'
 	},
 	Haze: {
 		colors: ['yellow', 'brown'],
 		title: 'Haze',
-		subtitle: 'More information?',
 		icon: 'ios-cloudy'
 	}
 }
 
-function Weather({ temp, weatherName, city, dayTwoTemperature, dayTwoName }) {
+const handlePress = () => {
+	alert("pressed")
+}
 
-	console.log("in weather", dayTwoName)
+function Weather({ temp, weatherName, city, hourlyForecast }) {
+
+	// console.log("in weather", hourlyForecast)
 
 	return (
 	<LinearGradient colors={weatherCases[weatherName].colors} style={styles.container}>
@@ -69,18 +65,17 @@ function Weather({ temp, weatherName, city, dayTwoTemperature, dayTwoName }) {
 			<Text style={styles.city}>{city}</Text>
 		</View>
 
-		<View style={styles.lower}>
+		<View style={styles.middle}>
 			<Text style={styles.title}>{weatherCases[weatherName].title}</Text>
-			<Text style={styles.subtitle}>{weatherCases[weatherName].subtitle}</Text>
 		</View>
+		
+		<Button style={styles.go} title="Press for Hourly Info" onPress={handlePress} />
 
-		<View>
-			<Forecast dayTwoTemperature={Math.floor(dayTwoTemperature - 231.15)} dayTwoName={dayTwoName}/>
-		</View>
 
 	</LinearGradient>
 	)
 }
+
 
 Weather.propTypes = {
 	temp: PropTypes.number.isRequired,
@@ -89,6 +84,10 @@ Weather.propTypes = {
 };
 
 export default Weather
+
+// <View style={styles.lower}>
+// <Hourlys hourlyForecast={hourlyForecast} />
+// </View>
 
 const styles = StyleSheet.create({
 	container: {
@@ -112,11 +111,14 @@ const styles = StyleSheet.create({
 		color: 'white',
 		marginTop: 10
 	},
-	lower: {
+	middle: {
 		flex: 1,
 		alignItems: 'flex-start',
 		justifyContent: 'flex-end',
-		paddingLeft: 25
+		paddingLeft: 10
+	},
+	lower: {
+		flex: 1
 	},
 	title: {
 		fontSize: 38,
@@ -130,6 +132,13 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent',
 		color: 'white',
 		marginBottom: 24
+	},
+	go: {
+		fontSize: 20,
+		backgroundColor: 'transparent',
+		color: 'white',
+		marginBottom: 10,
+		paddingLeft: 10
 	}
 })
 
